@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="el">
+  <head>
+    <meta charset="UTF-8"> <!-- Lowercase utf-8 produces a parsing error! -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="./assets/styles/styles.css">
+
+    <!-- link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico" -->
+
+    <title>αρχική | eklegal</title>
+  </head>
+
+  <body>
+    <header>
+      <input type="checkbox" id="menuToggler" autocomplete="off" hidden unchecked>
+    
+      <div id="menu"> <!-- Use a div to have an aside with secondary info, nav stays pure -->
+        <div id="menuHead">
+          <img src="./assets/images/logo.png" class="logo" alt="Λογότυπο του γραφείου, σε λευκή γραμματοσειρά, EKLEGAL">
+  
+          <label for="menuToggler" tabindex="0" aria-controls="menu" role="button" class="basicFlex"> 
+            <!-- Trigram's individual lines, omitted by screenreaders -->
+            <span aria-hidden="true"></span>
+ 
+            <span aria-hidden="true"></span>
+
+            <span aria-hidden="true"></span>
+          </label>
+        </div><!-- End of div#menuHead -->
+
+        <div id="menuBody">
+          <nav> 
+            <a href="./index.html">Αρχική</a>
+
+            <a href="./about.html">Το γραφείο</a>
+
+            <a href=#>Υπηρεσίες</a>
+
+            <a href=#>Νέα & Δημοσιεύσεις</a>
+ 
+            <a href=# id="languageSwitch" lang="en">en</a>
+          </nav>
+
+          <aside>
+            <address>
+              <a href="./contact.html">Ανδρέα Παπανδρέου 7, Χαλάνδρι, 15234</a>
+
+              <a href="tel:00302130385724">2130385724</a>
+
+              <a href="mailto:info@eklegal.gr" lang="en">info@eklegal.gr</a>
+
+              <a href=# lang="en">LinkedIn</a>
+            </address>
+          </aside>
+        </div><!-- End of div#menuBody -->
+      </div><!-- End of div#menu -->
+
+      <h1 lang="en">Law,<br>Simplified</h1>
+    </header>
+ 
+    <main>
+      <section id="firm">
+        <h2>Το<br>γραφείο</h2>
+ 
+        <div class="textColon">
+          <p>Στο δικηγορικό μας γραφείο συνδυάζουμε την σύγχρονη νομική γνώση με μια δημιουργική και καινοτόμο προσέγγιση. Με σεβασμό στις αξίες και τις ανάγκες κάθε πελάτη, προσφέρουμε εξατομικευμένες υπηρεσίες που συνδυάζουν την εμπειρία και τη φρεσκάδα νέων ιδεών. Στόχος μας είναι να δημιουργήσουμε μια σχέση εμπιστοσύνης, παρέχοντας διαρκή νομική υποστήριξη σε κάθε βήμα.</p>  
+        </div> 
+      </section> <!-- End of section#firm -->
+
+      <section id="sectors">
+        <h2>Τομείς<br>Εξειδίκευσης</h2>
+
+        <div class="textColon">
+          <p>Ειδικευόμαστε σε ένα ευρύ φάσμα υποθέσεων, αντιμετωπίζοντας κάθε ζήτημα με υπευθυνότητα, συνέπεια και στρατηγική σκέψη.</p>
+
+          <ul>
+            <li>Εμπορικό & Εταιρικό Δίκαιο</li>
+
+            <li>Πτωχευτικό & Προπτωχευτικές Διαδικασίες</li>
+
+            <li>Δίκαιο Ακινήτων & Κτηματολόγιο</li>
+
+            <li>Αναγκαστική Απαλλοτρίωση</li>
+
+            <li>Κληρονομικό Δίκαιο</li>
+
+            <li>Δίκαιο Προστασίας Καταναλωτή</li>
+
+            <li>Τραπεζικό Δίκαιο</li>
+
+            <li>Σωματεία & Μη Κερδοσκοπικοί Οργανισμοί</li>
+
+            <li>Δίκαιο Τηλεπικοινωνιών</li>
+
+            <li>Ιατρικό Δίκαιο</li>
+
+            <li>Δίκαιο Αλλοδαπών</li>
+
+            <li>Δίκαιο Ιθαγένειας</li>
+          </ul>
+        </div> 
+      </section> <!-- End of section#sectors -->
+
+      <section id="partners">
+        <h2>Τα<br>πρόσωπα</h2>
+        
+        <div class="textColon">
+          <p>Η Ελισάβετ Καραμπάτσου είναι Δικηγόρος Αθηνών και μέλος του Δικηγορικού Συλλόγου Αθηνών από το 2018. Διαθέτει εμπειρία στη δικαστηριακή και εξωδικαστική επίλυση διαφορών, καθώς και στη νομική συμβουλευτική σε ιδιώτες και επιχειρήσεις.</p>  
+        </div> 
+      </section> <!-- End of section#partners -->
+
+      <section id="contactForm">
+        <h2>Φόρμα<br>επικοινωνίας</h2>
+      
+        <form action="/contact" method="post">
+          <label for="name" class="noVisual">Όνομα</label>
+          <input id="name" name="name" type="text" placeholder="'Ονομα" required>
+
+          <label for="email" class="noVisual" lang="en">E-mail</label>
+          <input id="email" name="email" type="email" placeholder="Email" required>
+
+          <label for="msg" class="noVisual">Μήνυμα</label>
+          <textarea id="msg" name="msg" rows="8" placeholder="Μήνυμα" required></textarea>
+
+          <button type="submit">Υποβολή</button>
+        </form>
+      </section> <!-- End of section#contactForm -->
+    </main>
+    
+    <footer>  
+      <div id="epilogue">
+        <address>
+          <a href="tel:00302130385724">+30 2130385724</a>
+
+          <a href="mailto:info@eklegal.gr" lang="en">info@eklegal.gr</a>
+
+          <a href=#>Ανδρέα Παπανδρέου 7, Χαλάνδρι, 15234</a>
+        </address>
+
+        <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=23.798186480998996%2C38.021305297010265%2C23.801726996898655%2C38.02323443637716&amp;layer=mapnik&amp;marker=38.02226987304223%2C23.799956738948822" ></iframe>
+        
+        <small><a href="https://www.openstreetmap.org/?mlat=38.022271&amp;mlon=23.799957#map=19/38.022270/23.799957&amp;layers=N">Προβολή πλήρους χάρτη</a></small> <!-- Side comment -->
+      </div> <!-- End of div#epilogue --> 
+
+     <div id="misc">
+       <span>LinkedIn | Facebook</span>
+       <span>&#169; 2026 | All rights reserved</span>
+       <img src="./assets/images/logo.png" class="logo" alt="Λογότυπο του γραφείου, σε λευκή γραμματοσειρά, EKLEGAL">
+     </div> <!-- End of div#misc -->
+    </footer>
+
+    <!-- Scripts -->
+    <script src="./assets/scripts/menu.js"></script>
+  </body>
+</html>

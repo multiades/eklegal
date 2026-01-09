@@ -1,0 +1,817 @@
+/*====Font faces====*/
+
+/* Source Serif for headings */
+
+@font-face {
+  font-family: 'Source-Serif';
+  font-style: normal;
+  font-weight: 200 900; /* All of the supported weights */
+  font-display: swap;
+  src: url('../fonts/source-serif/SourceSerif4Variable-Roman.ttf.woff2') format('woff2');
+}
+
+/* Source Sans for body text */
+
+@font-face {
+  font-family: 'Source-Sans';
+  font-style: normal;
+  font-weight: 200 900; 
+  font-display: swap;
+  src: url('../fonts/source-sans/SourceSans3VF-Upright.ttf.woff2') format('woff2');
+}
+
+/*====Mobile-first, portrait-first styling====*/
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;	
+
+  &.noVisual {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: no-wrap;
+    border: 0; /* Legacy hardened and more absolute than border: none */
+  }
+}
+
+/* Most browsers scroll on html, some mobile ones may do it on body */
+html,
+body {
+  width: 100%; /* Does not include scrollbars and UI-tools, reliable if border-box is used and global margins, paddings are zero, I explicitly set width 100% to all desired block elements to avoid pixel rounding issues*/
+}
+
+html.menuOpen {
+  overflow-y: hidden;
+}
+
+body {
+  --theme: #1f3d28; /* british racing - library green */
+  --themeLight: #2f5d46;
+  --complement: #b8a46a; /* gold, an exception, not part of the pallete */
+  --offblack: #1f1f1d;
+  --offwhite: #e9e5de;
+  --bgWhite: #fafaf8; /* background white */
+  --overlay: rgba(255, 255, 255, 0.3); /* pure white, predictable */
+
+  font-family: "Source-Sans", sans-serif;
+  font-weight: 400;
+  color: var(--offblack);
+  background-color: var(--bgWhite);
+  line-height: 1.5;
+
+  &::before {
+    content: '';
+    display: block;
+    background: url('../images/yume.jpg') center left / cover no-repeat; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; /* Needs width explicitly, despite being a block */
+    height: 100vh; /* Fallback */
+    height: 100lvh; /* The largerst viewport height*/
+    z-index: -1; /* Below all other content, a hack for a fixed background-attachment, since its position is fixed */
+    opacity: 0; /* Start invisible */
+    animation: fadeIn 0.5s ease-out 1.2s forwards; /* Wait for h1 to animate */
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Source-Serif", serif;
+  line-height: 1.2;
+}
+
+h1,
+h2 {
+  font-weight: 500;
+}
+
+h1 {
+  color: var(--offblack);
+  font-size: 1.75rem;
+  text-shadow: 0 1px 0 white; /* For readability */
+  background-image:
+    linear-gradient(var(--offblack), var(--offblack)),
+    linear-gradient(var(--offblack), var(--offblack));
+  background-position:
+    left top,
+    right bottom;
+  background-size:
+    0% 2px,
+    0% 2px;
+  background-repeat: no-repeat;
+  animation: /* name duration timing delay fill-mode */
+    textPop 0.4s ease-out 0s forwards,
+    drawBorders 0.8s ease-out 0.4s forwards;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+a {
+  /* Check if I can bypass UA styling with 'all: unset' without sacrificing important declarations */
+  font-style: normal;
+  text-decoration: none;  
+  
+  &:hover,
+  &:active{
+    text-decoration: underline;
+  }
+} 
+
+header {
+  --verticalGap: 8px;
+  --horizontalGap: 24px;
+
+  width: 100%;
+  height: 100vh;
+  height: 100svh; 
+  padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+div {
+  width: 100%;
+
+  &#menu {
+    --transitionDuration: 800ms;
+    --transitionCurve: ease-in-out; 
+    --opacityDelay: 200ms;
+    --logoHeight: 48px; /* Original png is 780x426 pixels */
+    --headHeight: calc(2 * var(--verticalGap) + var(--logoHeight));
+
+    position: fixed; /* Anchored to the viewport */
+    top: 0;
+    left: 0;
+    z-index: 1; /* Above the main and the other positioned elements at z-index 0 */
+    height: 100vh;
+    height: 100dvh; /* Dynamically cover the viewport at every position, scroll locking is in place */
+    background-color: var(--theme);
+    /* Transition on GPU-accelerated clip-path instead of CPU-intensive height that causes document reflow */
+    transition: clip-path var(--transitionDuration) var(--transitionCurve);
+    transition-delay: var(--opacityDelay); /* When menuToggler is previously checked, wait for menu content to fade out */
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% var(--headHeight),
+      0 var(--headHeight),
+      0 1px,
+      0 0
+    );
+
+    &::after { /* Separation line */
+      content: '';
+      display: block;
+      position: absolute;
+      top: calc(var(--headHeight) - 2px); /* Minus its height, to be visible against the clipped path */
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--offblack);   
+    }  
+  }
+
+  &#menuHead {
+    height: var(--headHeight);
+    padding: var(--verticalGap) var(--horizontalGap);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &>img.logo {
+      width: auto;
+      height: var(--logoHeight);
+    }
+  }
+
+  &#menuBody {
+    height: calc(100% - var(--headHeight));
+    overflow-y: auto;
+    padding: calc(2 * var(--verticalGap)) calc(2 * var(--horizontalGap));
+    transition: opacity var(--opacityDelay) var(--transitionCurve); /* Use opacityDelay as the transition's duration */
+    transition-delay: 0s; /* When menuToggler is previously checked, transition immediately */
+    opacity: 0;
+  }
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  &>a {
+    font-size: 1.5rem;
+    flex-shrink: 0; /* All flex anchor items won't get squished (scootched) on overflows */
+    user-select: none; /* Can't highlight anything, it can be inherited but some browsers inject specific styling for it */
+    color: var(--offwhite); /* Links get style injections from the browser */
+  
+    &:not(:last-of-type) {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+aside {
+  margin-top: 4rem;
+  
+  &>address>a {
+    display: block;
+    font-size: 1.25rem;
+    color: var(--offwhite);
+
+    &:not(:last-of-type) {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+label[for="menuToggler"] {
+  --line: 0.25rem;
+  --size: calc(var(--line) * 5); /* Operating on unitless numbers preserves the unit */
+  --transitionDuration: 400ms; /* Scoped CSS properties, they take precedence over others with the same name */
+  --transitionCurve: ease-in-out;
+
+  width: var(--size);
+  height: var(--size);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  /* The label has no transition delay in both states, more aesthetic this way */
+  transition: transform var(--transitionDuration) var(--transitionCurve);
+
+  &>span {
+    width: 100%;
+    height: var(--line);
+    flex-shrink: 0;
+    /* The animation may suffer if transform and opacity are solely transitioned on*/
+    transition: all calc(var(--transitionDuration) / 2) var(--transitionCurve); /* Half the label rotation's duration */
+    transition-delay: 0s; /* If menuToggler was aleady checked, transition immediately */ 
+    background-color: var(--offwhite);
+  }
+}  
+
+
+/* When the menuToggler is checked */
+input#menuToggler:checked+div#menu{ /* Must have a relationship below here, not a media query */
+  transition-delay: 0s; /* If menuToggler is was already checked, transition immediately */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% var(--headHeight),
+    100% 100%,
+    0 100%,
+    0 0
+  );
+
+  &>div {
+    &#menuHead>label[for="menuToggler"] {
+      transform: rotate(-180deg);
+
+      &>span {
+        &:not(:nth-child(2)) {
+          transition-delay: calc(var(--transitionDuration) / 2); /* Waiting for half and not the whole of label rotation's duration for smoothness */
+        }
+
+        &:nth-child(1) {
+          /* Translation first, otherwise the transform-origin skewes the translation after rotation */
+          transform: translateY(calc(var(--line) * 2)) rotate(-45deg); /* Aligning its center with the label's */
+        }
+
+        &:nth-child(2) { /* Central span becomes opaque, with no delay */
+          transition-delay: calc(var(--transitionDuration) / 4); /* Start the opacity's transition a little sooner, we don't care about the bg color since the span becomes opaque */
+          opacity: 0; 
+        }
+   
+        &:nth-child(3) {
+          transform: translateY(calc(var(--line) * -2)) rotate(45deg);
+        }
+      }
+    }
+
+    &#menuBody {
+      transition-delay: var(--transitionDuration); /* If menuToggler was unchecked, wait for menu's expansion */ 
+      opacity: 1;
+    }
+  }
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: var(--bgWhite);
+  font-size: 1.25rem;
+}
+
+section {
+  --gap: 96px;
+
+  margin-top: var(--gap);
+
+  &:not(#contactForm) {
+    --anchor: 80vw;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    
+    &::before,
+    &>div.textColon {
+      width: var(--anchor);
+    }
+
+    &::before {
+      content: '';
+      background-position: top;
+      background-size: cover;
+      background-repeat: no-repeat;
+      height: var(--anchor);
+      border-radius: 8px 8px 0 0;
+      height: var(--anchor);
+    }
+
+    &#firm::before {
+      background-image: url('../images/academia.jpg');
+    }
+
+    &#sectors::before {
+      background-image: url('../images/temple.jpg');
+    }
+
+    &#partners::before {
+      background-image: url('../images/elisavet.jpg');
+    }
+
+    &>h2 {
+      width: 100%;
+      background-color: var(--offblack);
+      color: var(--offwhite);
+      padding-left: 0.5rem; /* We need the full background strip */
+    }
+
+    &>div.textColon {
+      padding: 1.5rem .5rem;
+      border: 1px solid var(--offblack);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+
+      &>*:not(:first-child) {
+        margin-top: 1.5rem;
+      }
+  
+      &>ul>li {
+        margin-left: .75rem; /* Extra margin for the markers */
+
+        &:not(:last-of-type) {
+          margin-bottom: 1rem;
+        }
+        
+        &::marker {
+          content: '\2023\0020'; /* Override the default marker */
+          color: var(--complement);
+        }
+      }
+    }
+  }
+
+  &#contactForm {
+    --formPadding: 24px;
+
+    width: 100%; 
+    padding: var(--formPadding);
+    background-color: var(--theme);
+
+    &>h2 {
+      color: var(--offwhite);
+      margin-bottom: 2rem;
+      width: fit-content;
+
+      &::after {
+        content: '';
+        display: block;
+        margin-top: 1rem;
+        width: 8re;
+        height: 2px;
+        background-color: var(--complement);
+      }
+    }
+  }
+}
+
+form {
+  max-width: 42rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  &>input,
+  &>textarea,
+  &>button {
+    width: 100%;
+    font-size: 1.25rem;
+    padding: 0.5rem;
+    border-radius: 8px; /* Never pill-shaped for serious tone */
+  }
+
+  &>input,
+  &>textarea {
+    background-color: var(--theme); /* White gets injected here by the browser */
+    border: 1px solid var(--offwhite);
+    color: var(--offwhite);
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+
+    &:focus {
+      outline: none; /* An outer ring gets injected */
+      border-color: white;
+      background-color: var(--themeLight);
+    }
+  }
+
+  &>input {
+    margin-bottom: 1rem;
+  }
+
+  &>textarea {
+    margin-bottom: 2rem;
+  }
+
+  &>button {
+    background-color: var(--themeLight);
+    color: var(--offwhite);
+    border: none;
+    text-align: center;
+
+    &:hover,
+    &:focus {
+      outline: none;
+      background-color: var(--bgWhite);
+      color: var(--offblack);
+    }
+
+    &:active {
+      background-color: var(--themeLight);
+      color: var(--offwhite);
+    }
+  }
+}
+
+footer {
+  --verticalGap: 32px;
+  --horizontalGap: 32px;
+  
+  width: 100%;
+}
+
+div {
+  &#epilogue {
+    padding: var(--verticalGap) var(--horizontalGap);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    &>address {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+
+      &>a {
+        color: var(--offblack);
+        background-color: var(--overlay);
+        font-size: 1.5rem;
+        font-weight: 500;
+        text-align: center;	
+          
+        &:not(:last-of-type) {
+          margin-bottom: 1rem;
+        }
+      }
+    }
+  }
+
+  &#misc {
+    --gap: .5rem;
+    --logoWidth: 80px;
+
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: var(--logoWidth) 1fr;
+    grid-template-areas:
+      "logo line1"
+      "logo line2";
+    justify-items: center;
+    background-color: var(--offblack);
+    color: var(--offwhite);
+    padding: var(--gap);
+
+    &>img.logo {
+      width: 80px;
+      grid-area: logo;
+    }
+
+    &>span {
+      &:first-of-type {
+        grid-area: line1;
+      }
+
+      &:last-of-type {
+        grid-area: line2;
+      }
+    }
+  }
+}
+
+iframe {
+  max-width: 400px;
+  width: 100%;
+  height: 240px;
+  margin-top: var(--verticalGap);
+  border: 2px solid var(--offwhite);
+  border-radius: 8px;
+}
+
+small>a {
+  color: var(--offblack);
+  font-size: 1rem;
+  text-align: center;
+  background-color: var(--overlay);
+}
+
+/*==== Media queries ====*/
+
+@media only screen and (min-width: 320px) { /* For wider smartphones */
+  section:not(#contactForm)::before {
+    height: calc(0.8 * var(--anchor));
+  }
+}
+
+@media only screen and (min-width: 480px) { /* Landscape mode */
+  main {
+    align-items: flex-start;
+  }
+
+  section {
+    &:not(#contactForm) {
+      --anchor: 128px;
+      --anchorHeight: calc(1.5 * var(--anchor)); /* New custom CSS property */
+
+      display: grid;
+      grid-template-rows: auto 1fr;
+      grid-template-columns: var(--anchor) 1fr;
+      gap: 1rem;
+
+      &::before {
+        grid-row: 1 / span 2;
+        grid-column: 1;
+        height: var(--anchorHeight);
+        border-radius: 0 8px 8px 0;
+      }
+
+      &>h2 {
+        background-color: transparent;
+        margin-top: calc(-.16 * var(--anchorHeight));
+        color: var(--offblack);
+        padding-left: 0;
+        grid-row: 1;
+        grid-column: 2;
+      }
+
+      &>div.textColon {
+        margin-top: calc(.5 * var(--anchorHeight));
+        width: fit-content;
+        grid-row: 2;
+        grid-column: 2;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+  
+        &>ul {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem 1rem;
+         
+          &>li:not(:last-of-type) {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+
+    &#contactForm {
+      --formPadding: 48px;
+    }
+  }
+
+  form >button {
+    width: fit-content;
+    padding: .5rem 1rem;
+  }
+}
+
+/* Need to have a JS validation for the one-liner navbar */
+
+@media only screen and (min-width: 768px) { /* Medium screens */
+  div { 
+    &#menu {
+      height: var(--headHeight);
+      transition: none;
+      clip-path: none;
+    }
+
+    &#menuHead {
+      display: block;
+    }
+      
+    &#menuBody {
+      height: 100%;
+      margin-top: calc(-1 * var(--headHeight));
+      padding: var(--verticalGap) var(--horizontalGap);
+      overflow-y: hidden;
+      transition: none;
+      opacity: 1;
+    }
+  }
+   
+  nav {
+    height: 100%;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+          
+    &>a {
+      font-size: 1.5rem;
+
+      &:not(:first-of-type) {
+        margin-left: 1rem;
+      }
+
+      &:not(:last-of-type) { /* Need this for specificity, can't just have margin-bottom zero on a */
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  label[for="menuToggler"],
+  aside { 
+    display: none;
+  }
+
+  section {
+    --gap: 160px; 
+
+    &:not(#contactForm) {
+      --anchor: 160px;
+
+      margin-right: 64px;
+
+      &>h2 {
+        margin-top: calc(-.05 * var(--anchorHeight));
+      }
+
+      &>div.textColon {
+        margin-top: calc(.7 * var(--anchorHeight));
+      }
+    }
+  
+    &#contactForm {
+      display: flex;
+      flex-direction: column;
+      justigy-content: flex-start;
+      align-items: flex-start;
+    }
+  }
+
+  form {
+    align-self: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas: 
+      "name email"
+      "msg msg"
+      "submit submit";
+    gap: 1rem;
+
+    &>input,
+    &>textarea {
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+    &>input {
+      &#name {
+        grid-area: name;
+      }
+
+      &#email {
+        grid-area: email;
+      }
+    }
+
+    &>textarea {
+      grid-area: msg;
+    }
+
+    &>button {
+      grid-area: submit;
+      justify-self: center;
+    }
+  } 
+}
+
+@media only screen and (min-width: 1024px) { /* Desktops */
+  section {
+    --gap: 240px;
+ 
+    &:not(#contactForm) {
+      --anchor: 240px;
+
+      margin: var(--gap);
+      margin-bottom: 0;
+
+      &::before {
+        border-radius: 8px;
+      }
+    }
+
+    &#contactForm {
+      --formPadding: 64px;
+    }
+  } 
+
+  form {
+    margin-top: var(--formPadding);
+
+    &>input {
+      &#name {
+        justify-self: end;
+      }
+
+      &#email {
+        justify-self: start;
+      }
+    }
+  } 
+}
+
+/* ====Animations ==== */
+
+@keyframes textPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  90% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 1; /* Snap */
+    transform: scale(1);
+  }
+}
+
+@keyframes drawBorders {
+  to {
+    background-size:
+      100% 2px,
+      100% 2px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to { 
+    opacity: 1; 
+  }
+}	
+
+
+
+
+
