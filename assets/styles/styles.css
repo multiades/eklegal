@@ -147,11 +147,12 @@ div {
   width: 100%;
 
   &#menu {
-    --transitionDuration: 800ms;
+    --transitionDuration: 600ms;
     --transitionCurve: ease-in-out; 
     --opacityDelay: 200ms;
     --logoHeight: 48px; /* Original png is 780x426 pixels */
-    --headHeight: calc(2 * var(--verticalGap) + var(--logoHeight));
+    --separation: 2px; /* The height of the menuHead - menuBody separative line */
+    --headHeight: calc(2 * var(--verticalGap) + var(--logoHeight) + var(--separation));
 
     position: fixed; /* Anchored to the viewport */
     top: 0;
@@ -167,20 +168,22 @@ div {
       0 0,
       100% 0,
       100% var(--headHeight),
-      0 var(--headHeight),
-      0 1px,
-      0 0
+      50% var(--headHeight),
+      50% 100%,
+      50% 100%,
+      50% var(--headHeight),
+      0 var(--headHeight)
     );
 
-    &::after { /* Separation line */
+    &::after { /* Separative line */
       content: '';
       display: block;
       position: absolute;
-      top: calc(var(--headHeight) - 2px); /* Minus its height, to be visible against the clipped path */
+      top: calc(var(--headHeight) - var(--separation)); /* Minus its height, to be visible against the clipped path */
       left: 0;
       width: 100%;
-      height: 2px;
-      background-color: var(--offblack);   
+      height: var(--separation);
+      background-color: white;   
     }  
   }
 
@@ -261,7 +264,7 @@ label[for="menuToggler"] {
     /* The animation may suffer if transform and opacity are solely transitioned on*/
     transition: all calc(var(--transitionDuration) / 2) var(--transitionCurve); /* Half the label rotation's duration */
     transition-delay: 0s; /* If menuToggler was aleady checked, transition immediately */ 
-    background-color: var(--offwhite);
+    background-color: white;
   }
 }  
 
@@ -273,9 +276,11 @@ input#menuToggler:checked+div#menu{ /* Must have a relationship below here, not 
     0 0,
     100% 0,
     100% var(--headHeight),
+    100% var(--headHeight),
     100% 100%,
     0 100%,
-    0 0
+    0 var(--headHeight),
+    0 var(--headHeight)
   );
 
   &>div {
@@ -502,6 +507,7 @@ div {
         font-size: 1.5rem;
         font-weight: 500;
         text-align: center;	
+        width: fit-content;
           
         &:not(:last-of-type) {
           margin-bottom: 1rem;
@@ -545,7 +551,7 @@ div {
 iframe {
   max-width: 400px;
   width: 100%;
-  height: 240px;
+  height: 196px;
   margin-top: var(--verticalGap);
   border: 2px solid var(--offwhite);
   border-radius: 8px;
@@ -623,9 +629,13 @@ small>a {
     }
   }
 
-  form >button {
+  form>button {
     width: fit-content;
     padding: .5rem 1rem;
+  }
+
+  iframe {
+    height: 144px;
   }
 }
 
